@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author awesome
  */
 @Slf4j
-public class ChannelTest {
+public class FileChannelTest {
 
     public void runFileChannel() {
         int capacity = 1024;
@@ -55,7 +55,7 @@ public class ChannelTest {
     }
 
     public static void main(String[] args) {
-        ChannelTest channelTest = new ChannelTest();
+        FileChannelTest channelTest = new FileChannelTest();
 //        channelTest.runFileChannel();
         channelTest.runFileChannel0();
     }
