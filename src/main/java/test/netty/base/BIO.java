@@ -1,4 +1,4 @@
-package test.netty.bio;
+package test.netty.base;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author awesome
  */
 @Slf4j
-public class App {
+public class BIO {
     private final int serverPort = 9527;
 
     /**
@@ -73,6 +73,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-        new App().run();
+        new BIO().run();
     }
 }

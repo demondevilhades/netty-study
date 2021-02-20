@@ -1,4 +1,4 @@
-package test.netty.buffer;
+package test.netty.base;
 
 import java.nio.Buffer;
 import java.nio.IntBuffer;
@@ -7,10 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
- * @author zs
+ * @author awesome
  */
 @Slf4j
-public class App {
+public class BufferTest {
 
     /**
      * 
@@ -19,12 +19,16 @@ public class App {
         int capacity = 8;
         IntBuffer intBuffer = IntBuffer.allocate(capacity);
         logBufferInfo(intBuffer);
-        for (int i = 0; i < capacity; i++) {
+        for (int i = 0; i < capacity / 2; i++) {
             intBuffer.put(i * 2);
             logBufferInfo(intBuffer);
         }
         intBuffer.flip();
         logBufferInfo(intBuffer);
+        while (intBuffer.hasRemaining()) {
+            intBuffer.get();
+            logBufferInfo(intBuffer);
+        }
         intBuffer.clear();
         logBufferInfo(intBuffer);
     }
@@ -34,6 +38,6 @@ public class App {
     }
 
     public static void main(String[] args) {
-        new App().run();
+        new BufferTest().run();
     }
 }
