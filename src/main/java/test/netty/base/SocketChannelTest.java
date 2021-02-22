@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class SocketChannelTest {
-    private final int port = 19527;
+    private final int port = 9527;
 
     /**
      * 
@@ -39,26 +39,35 @@ public class SocketChannelTest {
                     log.info("ServerSocketChannel.accept");
                     log(socketChannel);
                     log(socketChannel.socket());
-                    while (running.get()) {// TODO
-                        StringBuilder sb = new StringBuilder();
-                        int read = -1;
-                        do {
-                            byteBuffer.clear();
-                            read = socketChannel.read(byteBuffer);
-                            if (read != -1) {
-                                byteBuffer.flip();
-                                sb.append(StandardCharsets.UTF_8.decode(byteBuffer), 0, read);
-                                if (read == capacity) {
-                                    continue;
-                                }
-                                String str = sb.toString();
-                                log.info("msg = {}", sb.toString());
-                                if ("stop".equalsIgnoreCase(str)) {
-                                    running.set(false);
-                                }
+                    StringBuilder sb = new StringBuilder();
+                    while (true) {// TODO
+                        byteBuffer.clear();
+                        int read = socketChannel.read(byteBuffer);
+                        if (read != -1) {
+                            byteBuffer.flip();
+                            sb.append(StandardCharsets.UTF_8.decode(byteBuffer), 0, read);
+                            if (read == capacity) {
+                                continue;
                             }
-                            break;
-                        } while (true);
+                            String str = sb.toString();
+                            log.info("msg = {}", sb.toString());
+                            if ("stop".equalsIgnoreCase(str)) {
+                                running.set(false);
+                                break;
+                            }
+                            sb.setLength(0);
+                            continue;
+                        } else if(sb.length() > 0) {
+                            String str = sb.toString();
+                            log.info("msg = {}", sb.toString());
+                            if ("stop".equalsIgnoreCase(str)) {
+                                running.set(false);
+                                break;
+                            }
+                            sb.setLength(0);
+                            continue;
+                        }
+                        break;
                     }
                     log.info("ServerSocketChannel.end");
                     log(socketChannel);
