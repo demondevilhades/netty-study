@@ -57,7 +57,7 @@ public class SocketChannelTest {
                             }
                             sb.setLength(0);
                             continue;
-                        } else if(sb.length() > 0) {
+                        } else if (sb.length() > 0) {
                             String str = sb.toString();
                             log.info("msg = {}", sb.toString());
                             if ("stop".equalsIgnoreCase(str)) {
@@ -85,19 +85,17 @@ public class SocketChannelTest {
     private void log(SocketChannel socketChannel) {
         log.info(
                 "socketChannel.isBlocking = {}, socketChannel.isConnected = {}, socketChannel.isConnectionPending = {}, socketChannel.isOpen = {}, socketChannel.isRegistered = {}",
-                socketChannel.isBlocking(), socketChannel.isConnected(), socketChannel.isConnectionPending(),
-                socketChannel.isOpen(), socketChannel.isRegistered());
+                socketChannel.isBlocking(), socketChannel.isConnected(), socketChannel.isConnectionPending(), socketChannel.isOpen(),
+                socketChannel.isRegistered());
     }
 
     private void log(ServerSocketChannel serverSocketChannel) {
-        log.info(
-                "serverSocketChannel.isBlocking = {}, serverSocketChannel.isOpen = {}, serverSocketChannel.isRegistered = {}",
+        log.info("serverSocketChannel.isBlocking = {}, serverSocketChannel.isOpen = {}, serverSocketChannel.isRegistered = {}",
                 serverSocketChannel.isBlocking(), serverSocketChannel.isOpen(), serverSocketChannel.isRegistered());
     }
 
     private void log(Socket socket) {
-        log.info("socket.isBound = {}, socket.isClosed = {}, socket.isConnected = {}", socket.isBound(),
-                socket.isClosed(), socket.isConnected());
+        log.info("socket.isBound = {}, socket.isClosed = {}, socket.isConnected = {}", socket.isBound(), socket.isClosed(), socket.isConnected());
     }
 
     public static void main(String[] args) {

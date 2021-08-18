@@ -26,14 +26,13 @@ public class ClientTest {
                 } while (!socketChannel.finishConnect());
             }
             log.info("connected");
-            try (InputStreamReader isr = new InputStreamReader(System.in);
-                    BufferedReader br = new BufferedReader(isr);) {
+            try (InputStreamReader isr = new InputStreamReader(System.in); BufferedReader br = new BufferedReader(isr);) {
                 do {
                     String line = br.readLine();
                     ByteBuffer byteBuffer = ByteBuffer.wrap(line.getBytes());
                     socketChannel.write(byteBuffer);
                     log.info("send : {}", line);
-                    if("stop".equals(line)) {
+                    if ("stop".equals(line)) {
                         log.info("stop");
                         break;
                     }

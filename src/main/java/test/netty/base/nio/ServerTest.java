@@ -18,8 +18,7 @@ public class ServerTest {
 
     public void run() {
         final AtomicBoolean running = new AtomicBoolean(true);
-        try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-                Selector selector = Selector.open();) {
+        try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open(); Selector selector = Selector.open();) {
             InetSocketAddress inetSocketAddress = new InetSocketAddress(port);
             serverSocketChannel.socket().bind(inetSocketAddress);
             serverSocketChannel.configureBlocking(false);
@@ -34,21 +33,21 @@ public class ServerTest {
                     while (keyIterator.hasNext()) {
                         SelectionKey selectionKey = keyIterator.next();
                         log.info("key : hashCode = {}", selectionKey.hashCode());
-                        if(selectionKey.isAcceptable()) {
+                        if (selectionKey.isAcceptable()) {
                             SocketChannel socketChannel = serverSocketChannel.accept();
                             socketChannel.configureBlocking(false);
                             socketChannel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(1024));
                             log.info("accept channel : hashCode = {}", socketChannel.hashCode());
                         } else if (selectionKey.isConnectable()) {
                         } else if (selectionKey.isReadable()) {
-                            SocketChannel socketChannel = (SocketChannel)selectionKey.channel();
+                            SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
                             ByteBuffer byteBuffer = (ByteBuffer) selectionKey.attachment();
                             int read = socketChannel.read(byteBuffer);
                             log.info("position = {}, limit = {}, capacity = {}", byteBuffer.position(), byteBuffer.limit(), byteBuffer.capacity());
                             String str = new String(byteBuffer.array(), 0, read);
                             byteBuffer.clear();
                             log.info("read[{}] = {}", socketChannel.hashCode(), str);
-                            if("stop".equals(str)) {
+                            if ("stop".equals(str)) {
                                 log.info("stop");
                                 running.set(false);
                             }
