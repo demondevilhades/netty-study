@@ -9,9 +9,16 @@ import java.nio.channels.SocketChannel;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 
+ * @author awesome
+ */
 @Slf4j
 public class ClientTest {
 
+    /**
+     * 
+     */
     public void run() {
         try (SocketChannel socketChannel = SocketChannel.open();) {
             InetSocketAddress inetSocketAddress = new InetSocketAddress(ServerTest.port);

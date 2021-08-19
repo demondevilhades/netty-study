@@ -12,10 +12,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 
+ * @author awesome
+ */
 @Slf4j
 public class ServerTest {
     static final int port = 9527;
 
+    /**
+     * 
+     */
     public void run() {
         final AtomicBoolean running = new AtomicBoolean(true);
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open(); Selector selector = Selector.open();) {

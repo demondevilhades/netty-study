@@ -17,6 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FileChannelTest {
 
+    /**
+     * 
+     */
     public void runFileChannel() {
         int capacity = 1024;
         ByteBuffer byteBuffer = ByteBuffer.allocate(capacity);
@@ -38,6 +41,9 @@ public class FileChannelTest {
         }
     }
 
+    /**
+     * 
+     */
     public void runFileChannel0() {
         try (RandomAccessFile fis = new RandomAccessFile("./src/main/java/test/netty/base/ChannelTest.java", "rw");
                 FileChannel fileChannel = fis.getChannel();) {
