@@ -17,6 +17,9 @@ public class Test {
 
     private final Pattern pattern = Pattern.compile("^([01234567][\\dabcdef],)*[01234567][\\dabcdef]$");
 
+    /**
+     * 
+     */
     public void run() {
         byte[] bs = new byte[1024];
         int total = -1;
@@ -36,6 +39,9 @@ public class Test {
         }
     }
 
+    /**
+     * 
+     */
     public void sendByte() {
         String line = null;
         try (InputStreamReader isr = new InputStreamReader(System.in); BufferedReader br = new BufferedReader(isr);) {

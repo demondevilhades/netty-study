@@ -1,4 +1,4 @@
-package test.netty.base.nio.chat;
+package test.base.nio.chat;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

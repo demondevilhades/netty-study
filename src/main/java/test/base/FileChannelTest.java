@@ -1,4 +1,4 @@
-package test.netty.base;
+package test.base;
 
 import java.io.FileInputStream;
 import java.io.IOException;

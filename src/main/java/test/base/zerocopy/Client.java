@@ -1,4 +1,4 @@
-package test.netty.base.zerocopy;
+package test.base.zerocopy;
 
 import java.io.DataOutputStream;
 import java.io.File;
