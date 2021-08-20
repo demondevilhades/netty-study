@@ -21,7 +21,7 @@ public class ClientTest {
      */
     public void run() {
         try (SocketChannel socketChannel = SocketChannel.open();) {
-            InetSocketAddress inetSocketAddress = new InetSocketAddress(ServerTest.port);
+            InetSocketAddress inetSocketAddress = new InetSocketAddress(ServerTest.PORT);
             socketChannel.configureBlocking(false);
             if (!socketChannel.connect(inetSocketAddress)) {
                 do {

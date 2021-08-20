@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ServerTest {
-    static final int port = 9527;
+    static final int PORT = 9527;
 
     /**
      * 
@@ -26,7 +26,7 @@ public class ServerTest {
     public void run() {
         final AtomicBoolean running = new AtomicBoolean(true);
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open(); Selector selector = Selector.open();) {
-            InetSocketAddress inetSocketAddress = new InetSocketAddress(port);
+            InetSocketAddress inetSocketAddress = new InetSocketAddress(PORT);
             serverSocketChannel.socket().bind(inetSocketAddress);
             serverSocketChannel.configureBlocking(false);
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);

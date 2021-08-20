@@ -43,6 +43,12 @@
 			<version>1.2.5</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.67.Final</version>
+		</dependency>
+		
 		<!-- 
 		<dependency>
 			<groupId>commons-cli</groupId>
@@ -68,11 +74,6 @@
 		    <groupId>com.lmax</groupId>
 		    <artifactId>disruptor</artifactId>
 		    <version>3.4.4</version>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>4.1.67.Final</version>
 		</dependency>
 		 -->
 
