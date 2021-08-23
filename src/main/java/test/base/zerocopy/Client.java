@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Client {
 
     private final String fileName = "";
+    @SuppressWarnings("unused")
     private final int maxLen = 1024 * 1024 * 8;
 
     /**

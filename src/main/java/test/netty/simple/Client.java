@@ -30,7 +30,7 @@ public class Client {
 
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new SimpleClientHandler());
+                            ch.pipeline().addLast("test", new SimpleClientHandler());
                         }
                     });
             ChannelFuture cf = bootstrap.connect(new InetSocketAddress("127.0.0.1", Server.PORT)).sync();

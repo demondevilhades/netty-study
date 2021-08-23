@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -21,7 +22,7 @@ public class SimpleClientHandler extends ChannelInboundHandlerAdapter {
         log.info("channelActive : ctx = {}", ctx);
         try (Scanner scanner = new Scanner(System.in)) {
             if (scanner.hasNextLine()) {
-                ctx.writeAndFlush(Unpooled.copiedBuffer(scanner.nextLine(), StandardCharsets.UTF_8));
+                ctx.writeAndFlush(Unpooled.copiedBuffer(scanner.nextLine(), CharsetUtil.UTF_8));
             }
         }
     }

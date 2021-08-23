@@ -1,12 +1,12 @@
-package test.netty.simple;
+package test.netty.http;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,20 +29,20 @@ public class Server {
 
         try {
             bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 128).childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
 
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             log.info("SocketChannel.is = {}", ch.id());
-                            
-                            ch.pipeline().addLast("test", new SimpleServerHandler());
+
+                            ch.pipeline().addLast("testHttp", new HttpServerCodec())
+                                    .addLast("test", new HttpServerHandler());
                         }
                     });
             ChannelFuture cf = bootstrap.bind(PORT).addListener(new GenericFutureListener<ChannelFuture>() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
-                    if(future.isSuccess()) {
+                    if (future.isSuccess()) {
                         log.info("future is success");
                     } else {
                         log.info("future is not success");
