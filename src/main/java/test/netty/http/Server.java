@@ -19,10 +19,10 @@ public class Server {
     static final int PORT = 9527;
 
     /**
-     * 
+     * http://localhost:9527/
      */
     public void run() {
-        NioEventLoopGroup bossGroup = new NioEventLoopGroup();
+        NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
         ServerBootstrap bootstrap = new ServerBootstrap();
@@ -33,7 +33,7 @@ public class Server {
 
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            log.info("SocketChannel.is = {}", ch.id());
+                            log.info("SocketChannel.id = {}", ch.id());
 
                             ch.pipeline().addLast("testHttp", new HttpServerCodec())
                                     .addLast("test", new HttpServerHandler());
