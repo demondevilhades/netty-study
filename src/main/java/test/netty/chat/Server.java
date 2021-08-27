@@ -1,4 +1,4 @@
-package test.netty.simple;
+package test.netty.chat;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -7,6 +7,9 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
+import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +39,9 @@ public class Server {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             log.info("SocketChannel.is = {}", ch.id());
                             
-                            ch.pipeline().addLast("test", new SimpleServerHandler());
+                            ch.pipeline().addLast("decoder", new StringDecoder(CharsetUtil.UTF_8))
+                                    .addLast("encoder", new StringEncoder(CharsetUtil.UTF_8))
+                                    .addLast("chat", new ChatServerHandler());
                         }
                     });
             ChannelFuture cf = bootstrap.bind(PORT).addListener(new GenericFutureListener<ChannelFuture>() {
