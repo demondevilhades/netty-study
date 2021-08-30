@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta name="save" content="history">
+		<title>test</title>
+		<link type="text/css" rel="styleSheet"  href="./css/a.css" />
+		<script type="text/javascript" src="./js/jquery/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="./js/sockjs/sockjs.min.js"></script>
+		<script type="text/javascript">
+			
+		$(function(){
+			var ws;
+			if(('WebSocket' in window) || ('MozWebSocket' in window)){
+				console.debug("websocket");
+				ws = new WebSocket("ws://localhost:9527/ws/chat");
+			} else {
+				console.debug("socketjs");
+				ws = new WebSocket("ws://localhost:9527/sockjs/chat");
+			}
+			ws.onopen = function(e){
+				console.debug("ws open");
+				console.debug(e);
+			}
+			ws.onclose = function(e){
+				console.debug("ws onclose");
+				console.debug(e);
+			}
+			ws.onmessage = function(e){
+				console.debug("ws onmessage");
+				receiveMsg(e);
+			}
+			ws.onerror = function(e){
+				console.debug("ws onerror");
+				console.debug(e);
+			}
+			sendMsg = function (msg){
+				if(ws && ws.readyState == ws.OPEN){
+					ws.send(msg);
+				} else {
+					console.info(ws);
+				}
+			}
+		})
+		
+		$(document).keyup(function(event){
+			if(event.keyCode ==13){
+				$("#sendButton").trigger("click");
+			}
+		});
+		
+		var sendMsg;
+		
+		function receiveMsg(e){
+			console.debug(e);
+			var data = JSON.parse(e.data);
+			var html = "<p><strong>";
+			if(data.from){
+				html += data.from;
+			} else {
+				html += "unknown";
+			}
+			html += "&nbsp;:&nbsp;</strong>" + data.msg + "</p>";
+			$("#msgPanel").append(html);
+		}
+		
+		function send(){
+			$("#sendButton").attr("disabled", "disabled");
+			var msg = {type : "msg",
+					   msg  : $("#msgTextarea").val(),
+					   from : $("#user").val()};
+			sendMsg(JSON.stringify(msg));
+			$("#msgTextarea").val("");
+			$("#sendButton").removeAttr("disabled");
+			$("#msgTextarea").focus("");
+		}
+		</script>
+		<style type="text/css">
+			#msgPanel {width: 98%; height: 90%; background-color: #FFFFAA;
+			 overflow-y: auto; overflow-x: hidden; word-wrap: break-word; word-break: break-all;};
+		</style>
+	</head>
+	<body>
+		<div style="width: 99%; height: 78%; margin-left: auto; margin-right: auto">
+			<p>user : <input id="user" type="text"></p>
+			<div id="msgPanel">
+			</div>
+		</div>
+		<div style="width: 99%; height: 10%; margin-left: auto; margin-right: auto">
+			<table style="width: 100%; height: 100%">
+				<tr>
+					<td style="width: 90%">
+						<textarea id="msgTextarea" style="width: 98%; height: 100%"></textarea>
+					</td>
+					<td>
+						<button id="sendButton" type="button" style="width: 80%; height: 40%" onclick="javascript:send()" >send</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>

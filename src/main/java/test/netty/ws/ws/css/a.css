@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+html, body { margin: 0px; height: 100% }
+
+body { font: normal 100% Helvetica, Arial, sans-serif; overflow-x: hidden; overflow-y: hidden }
+
+h1 { font-size: 1.5em; }
+
+main { float: right; width: 70%; } .leftBar { float: left; width: 25%; }
+
+img, object { max-width: 100%;}
