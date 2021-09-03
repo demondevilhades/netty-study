@@ -16,6 +16,8 @@ import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.util.CharsetUtil;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import io.netty.util.concurrent.EventExecutorGroup;
 import lombok.extern.slf4j.Slf4j;
 import test.utils.ResourcesUtils;
 
@@ -26,6 +28,8 @@ import test.utils.ResourcesUtils;
 @Slf4j
 public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
 
+    static final EventExecutorGroup GROUP = new DefaultEventExecutorGroup(8);
+    
     private static final AtomicInteger AI = new AtomicInteger(0);
     private static byte[] BS = null;
 
@@ -59,6 +63,8 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
                         content.readableBytes());
                 ctx.writeAndFlush(response);
             } else {
+//                GROUP.submit(task);
+                
                 ByteBuf content = Unpooled.copiedBuffer("test0", CharsetUtil.UTF_8);
                 DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
                         HttpResponseStatus.OK, content);

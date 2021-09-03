@@ -7,6 +7,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import io.netty.util.concurrent.EventExecutorGroup;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +26,8 @@ public class Server {
     public void run() {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+        
+        EventExecutorGroup businessGroup = new DefaultEventExecutorGroup(8);
 
         ServerBootstrap bootstrap = new ServerBootstrap();
 
@@ -36,7 +40,7 @@ public class Server {
                             log.info("SocketChannel.id = {}", ch.id());
 
                             ch.pipeline().addLast("testHttp", new HttpServerCodec())
-                                    .addLast("test", new HttpServerHandler());
+                                    .addLast(businessGroup, "test", new HttpServerHandler());
                         }
                     });
             ChannelFuture cf = bootstrap.bind(PORT).addListener(new GenericFutureListener<ChannelFuture>() {
