@@ -1,18 +1,25 @@
 package test.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.KeyStore;
 import java.security.Principal;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
+import javax.net.ssl.TrustManagerFactory;
 
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
-import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -23,10 +30,6 @@ public class SslUtils {
         File keyFile = new File(ResourcesUtils.getResourceFile("ssl/server_pkcs8.key"));
         SslContext sslCtx = SslContextBuilder.forServer(keyCertChainFile, keyFile)
                 .trustManager(InsecureTrustManagerFactory.INSTANCE).sslProvider(SslProvider.OPENSSL).build();
-        String[] keys = { "Country Name", "/C", "L", "O", "CN" };
-        for (String key : keys) {
-            log.info("{} = {}", key, sslCtx.attributes().attr(AttributeKey.<String>valueOf(key)).get());
-        }
     }
 
     public void test() throws CertificateException {
@@ -40,6 +43,33 @@ public class SslUtils {
 
         log.info("Principal = {}", principal);
         log.info("sigAlgName = {}", sigAlgName);
+    }
+
+    public void testServer() throws GeneralSecurityException, IOException {
+        KeyStore keyStore = KeyStore.getInstance("");
+        char[] password = null;
+        FileInputStream fis = null;
+        keyStore.load(fis, password);
+
+        {
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+            keyManagerFactory.init(keyStore, password);
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
+            SSLEngine sslEngine = sslContext.createSSLEngine();
+            sslEngine.setUseClientMode(false);
+        }
+
+        {
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
+            trustManagerFactory.init(keyStore);
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+            SSLEngine sslEngine = sslContext.createSSLEngine();
+            sslEngine.setUseClientMode(true);
+        }
     }
 
     public static void main(String[] args) throws Exception {
