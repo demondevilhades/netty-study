@@ -23,12 +23,15 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 
+ * @author awesome
+ */
 @Slf4j
 public class SslUtils {
 
     public static SslContext readServerSslContextFromFile(File keyCertChainFile, File keyFile) throws SSLException {
-        return SslContextBuilder.forServer(keyCertChainFile, keyFile)
-                .trustManager(InsecureTrustManagerFactory.INSTANCE).sslProvider(SslProvider.OPENSSL).build();
+        return SslContextBuilder.forServer(keyCertChainFile, keyFile).sslProvider(SslProvider.OPENSSL).build();
     }
 
     public static SslContext getClientSslContext() throws SSLException {
