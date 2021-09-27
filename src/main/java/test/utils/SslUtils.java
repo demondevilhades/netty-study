@@ -18,6 +18,7 @@ import javax.net.ssl.TrustManagerFactory;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
+import io.netty.handler.ssl.util.FingerprintTrustManagerFactory;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +26,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SslUtils {
 
-    public void readFromFile() throws SSLException {
-        File keyCertChainFile = new File(ResourcesUtils.getResourceFile("ssl/server.crt"));
-        File keyFile = new File(ResourcesUtils.getResourceFile("ssl/server_pkcs8.key"));
-        SslContext sslCtx = SslContextBuilder.forServer(keyCertChainFile, keyFile)
+    public static SslContext readServerSslContextFromFile(File keyCertChainFile, File keyFile) throws SSLException {
+        return SslContextBuilder.forServer(keyCertChainFile, keyFile)
                 .trustManager(InsecureTrustManagerFactory.INSTANCE).sslProvider(SslProvider.OPENSSL).build();
+    }
+
+    public static SslContext getClientSslContext() throws SSLException {
+        return SslContextBuilder.forClient()
+                .trustManager(InsecureTrustManagerFactory.INSTANCE).sslProvider(SslProvider.OPENSSL).build();
+    }
+
+    public static SslContext getTrustClientSslContext(String algorithm, String fingerprints) throws SSLException {
+        return SslContextBuilder.forClient()
+                .trustManager(FingerprintTrustManagerFactory.builder(algorithm).fingerprints(fingerprints).build())
+                .sslProvider(SslProvider.OPENSSL).build();
     }
 
     public void test() throws CertificateException {
@@ -45,7 +55,7 @@ public class SslUtils {
         log.info("sigAlgName = {}", sigAlgName);
     }
 
-    public void testServer() throws GeneralSecurityException, IOException {
+    public void testServerClient() throws GeneralSecurityException, IOException {
         KeyStore keyStore = KeyStore.getInstance("");
         char[] password = null;
         FileInputStream fis = null;
@@ -70,10 +80,5 @@ public class SslUtils {
             SSLEngine sslEngine = sslContext.createSSLEngine();
             sslEngine.setUseClientMode(true);
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        new SslUtils().readFromFile();
-        // new SslUtils().test();
     }
 }
